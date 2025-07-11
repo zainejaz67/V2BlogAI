@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Video to Blog AI Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: linear-gradient(135deg, #0f2027, #2c5364); min-height: 100vh; margin: 0; font-family: 'Montserrat', Arial, sans-serif; color: #fff; overflow-x: hidden; }
+        .header { display: flex; align-items: center; justify-content: space-between; padding: 2em 3vw 1em 3vw; background: rgba(10, 20, 40, 0.95); box-shadow: 0 2px 16px rgba(0,0,0,0.12); }
+        .logo { font-size: 2em; font-weight: 700; letter-spacing: 2px; color: #00e6ff; text-shadow: 0 2px 8px #00e6ff44; }
+        .nav-link { color: #fff; text-decoration: none; font-weight: 500; margin-left: 2em; transition: color 0.2s; }
+        .nav-link:hover { color: #00e6ff; }
+        .glass-card {
+            background: rgba(30, 40, 70, 0.55);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-radius: 18px;
+            border: 1.5px solid rgba(255,255,255,0.18);
+            padding: 3em 2.5em 2.5em 2.5em;
+            animation: fadeIn 1.2s cubic-bezier(.4,0,.2,1);
+            position: relative;
+            z-index: 2;
+            max-width: 950px;
+            margin: 4em auto 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        h1 { font-size: 2.6em; font-weight: 800; margin-bottom: 0.2em; color: #00e6ff; letter-spacing: 1px; text-shadow: 0 2px 12px #00e6ff33; text-align: center; }
+        .subtitle { font-size: 1.25em; color: #b0eaff; margin-bottom: 2.5em; text-align: center; }
+        .about-section { width: 100%; max-width: 700px; margin-bottom: 2.5em; }
+        .about-section h2 { font-size: 1.5em; color: #00e6ff; margin-bottom: 0.5em; font-weight: 700; letter-spacing: 0.01em; display: flex; align-items: center; gap: 0.5em; }
+        .about-section p, .about-section ul { font-size: 1.13em; color: #e0f7fa; line-height: 1.8; margin-bottom: 1.2em; }
+        .about-section ul { padding-left: 1.5em; }
+        .cta-btn {
+            margin-top: 2.5em;
+            padding: 1em 2.5em;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #00e6ff, #0072ff);
+            color: #fff;
+            font-size: 1.2em;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 2px 12px #00e6ff44;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+        }
+        .cta-btn:hover { background: linear-gradient(90deg, #0072ff, #00e6ff); transform: scale(1.04); }
+        /* Floating animated objects */
+        .floating-obj {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.25;
+            z-index: 1;
+            filter: blur(2px);
+            animation: floatAnim 8s ease-in-out infinite alternate;
+        }
+        .floating-obj2 { animation-delay: 2s; }
+        .floating-obj3 { animation-delay: 4s; }
+        .floating-obj4 { animation-delay: 1s; }
+        .floating-obj5 { animation-delay: 3s; }
+        .floating-obj6 { animation-delay: 2.5s; }
+        .floating-obj7 { animation-delay: 5s; }
+        @keyframes floatAnim {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-40px) scale(1.08); }
+        }
+        @media (max-width: 700px) {
+            .glass-card { padding: 1.2em 0.5em; }
+            h1 { font-size: 1.5em; }
+            .about-section { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating animated objects -->
+    <div class="floating-obj" style="width:120px;height:120px;top:8%;left:6%;background:linear-gradient(135deg,#00e6ff,#0072ff);"></div>
+    <div class="floating-obj floating-obj2" style="width:80px;height:80px;top:70%;left:80%;background:linear-gradient(135deg,#00e6ff,#fff);"></div>
+    <div class="floating-obj floating-obj3" style="width:100px;height:100px;top:60%;left:20%;background:linear-gradient(135deg,#0072ff,#00e6ff);"></div>
+    <div class="floating-obj floating-obj4" style="width:60px;height:60px;top:30%;left:50%;background:linear-gradient(135deg,#00e6ff,#00ffa3);"></div>
+    <div class="floating-obj floating-obj5" style="width:140px;height:140px;top:80%;left:10%;background:linear-gradient(135deg,#0072ff,#00e6ff);"></div>
+    <div class="floating-obj floating-obj6" style="width:90px;height:90px;top:15%;left:75%;background:linear-gradient(135deg,#00ffa3,#00e6ff);"></div>
+    <div class="floating-obj floating-obj7" style="width:50px;height:50px;top:50%;left:30%;background:linear-gradient(135deg,#fff,#00e6ff);"></div>
+    <div class="header">
+        <div class="logo">V2Blog<span style="color:#fff;">AI</span></div>
+        <nav>
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="about.html">About</a>
+            <a class="nav-link" href="contact.html">Contact</a>
+        </nav>
+    </div>
+    <div class="glass-card">
+        <h1>About V2BlogAI</h1>
+        <div class="subtitle">Your bridge from YouTube videos to engaging blog posts</div>
+        <div class="about-section">
+            <h2>💡 What is V2BlogAI?</h2>
+            <p>V2BlogAI is a free, AI-powered tool that instantly converts any YouTube video into a detailed, readable blog post. Just paste a YouTube link, and our system will fetch the transcript, summarize and structure the content, and present you with a ready-to-publish blog article.</p>
+        </div>
+        <div class="about-section">
+            <h2>⚡ How It Works</h2>
+            <ul>
+                <li>Paste a YouTube video URL on the home page.</li>
+                <li>Click <b>Generate Post</b> and wait a few moments.</li>
+                <li>The AI fetches the transcript, analyzes the content, and writes a detailed blog post for you.</li>
+                <li>Copy and use your new blog post anywhere you like!</li>
+            </ul>
+        </div>
+        <div class="about-section">
+            <h2>🛠️ Technology Stack</h2>
+            <ul>
+                <li><b>Python & Flask</b> — backend API</li>
+                <li><b>Ollama (Llama 3)</b> — local AI model for blog generation</li>
+                <li><b>youtube-transcript-api</b> — fetches YouTube video transcripts</li>
+                <li><b>HTML, Tailwind CSS, JS</b> — modern, responsive frontend</li>
+            </ul>
+        </div>
+        <button class="cta-btn" onclick="window.location.href='/'">Try it now!</button>
+    </div>
+</body>
+</html> 

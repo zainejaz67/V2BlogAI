@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video to Blog AI Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f2027, #2c5364);
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Montserrat', Arial, sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2em 3vw 1em 3vw;
+            background: rgba(10, 20, 40, 0.95);
+            box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+        }
+        .logo {
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #00e6ff;
+            text-shadow: 0 2px 8px #00e6ff44;
+        }
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 2em;
+            transition: color 0.2s;
+        }
+        .nav-link:hover {
+            color: #00e6ff;
+        }
+        .nav-link.active {
+            color: #00e6ff;
+            border-bottom: 2px solid #00e6ff;
+        }
+        /* Glassmorphism effect */
+        .glass-card {
+            background: rgba(30, 40, 70, 0.55);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-radius: 18px;
+            border: 1.5px solid rgba(255,255,255,0.18);
+            padding: 2.5em 2em 2em 2em;
+            animation: fadeIn 1.2s cubic-bezier(.4,0,.2,1);
+            position: relative;
+            z-index: 2;
+            max-width: 950px;
+            margin: 3em auto 0 auto;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            font-size: 2.3em;
+            font-weight: 700;
+            margin-bottom: 0.2em;
+            color: #00e6ff;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 12px #00e6ff33;
+        }
+        .subtitle {
+            font-size: 1.1em;
+            color: #b0eaff;
+            margin-bottom: 2em;
+        }
+        /* Floating animated objects */
+        .floating-obj {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.25;
+            z-index: 1;
+            filter: blur(2px);
+            animation: floatAnim 8s ease-in-out infinite alternate;
+        }
+        .floating-obj2 { animation-delay: 2s; }
+        .floating-obj3 { animation-delay: 4s; }
+        @keyframes floatAnim {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-40px) scale(1.08); }
+        }
+        /* Floating label effect */
+        .form-group { position: relative; margin-bottom: 2.2em; }
+        .form-input {
+            width: 100%;
+            padding: 1.1em 1em 0.7em 1em;
+            border-radius: 10px;
+            background: rgba(20,30,60,0.85);
+            color: #fff;
+            border: 1.5px solid #00e6ff44;
+            font-size: 1.1em;
+            outline: none;
+            transition: border 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px #00e6ff22;
+        }
+        .form-input:focus {
+            border: 1.5px solid #00e6ff;
+            box-shadow: 0 4px 16px #00e6ff55;
+        }
+        .form-label {
+            position: absolute;
+            left: 1em;
+            top: 1.1em;
+            color: #b0eaff;
+            font-size: 1.08em;
+            pointer-events: none;
+            background: transparent;
+            transition: all 0.2s cubic-bezier(.4,0,.2,1);
+        }
+        .form-input:focus + .form-label,
+        .form-input:not(:placeholder-shown) + .form-label {
+            top: -0.9em;
+            left: 0.7em;
+            font-size: 0.95em;
+            color: #00e6ff;
+            background: rgba(30,40,70,0.85);
+            padding: 0 0.4em;
+            border-radius: 6px;
+        }
+        .error {
+            color: #ff4e6a;
+            margin-top: 1em;
+            font-weight: 600;
+            min-height: 1.5em;
+        }
+        .result {
+            margin-top: 2.5em;
+            background: rgba(0, 230, 255, 0.07);
+            padding: 2em 1.5em;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px #00e6ff22;
+            font-size: 1.15em;
+            color: #fff;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+            font-family: 'Segoe UI', 'Montserrat', Arial, sans-serif;
+            line-height: 1.8;
+            letter-spacing: 0.01em;
+            max-width: 950px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .result.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .spinner {
+            display: none;
+            margin: 2em auto 0 auto;
+            border: 8px solid #1a2a3a;
+            border-top: 8px solid #00e6ff;
+            border-radius: 50%;
+            width: 64px;
+            height: 64px;
+            animation: spin 1s linear infinite;
+            position: relative;
+            left: 0;
+            right: 0;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .result h1 {
+            font-weight: 800;
+            margin-top: 2em;
+            margin-bottom: 1.2em;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 2.6em;
+            background: rgba(200, 240, 255, 0.7);
+            color: #1a2a3a;
+            border: none;
+            padding: 0.4em 1.2em;
+            display: inline-block;
+            letter-spacing: 0.01em;
+            border-radius: 2em;
+            box-shadow: 0 4px 24px #a1c4fd33;
+            position: relative;
+        }
+        .result h2 {
+            font-weight: 700;
+            margin-top: 1.7em;
+            margin-bottom: 0.9em;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 1.7em;
+            background: rgba(170, 220, 255, 0.55);
+            color: #1a2a3a;
+            border: none;
+            padding: 0.3em 1em;
+            display: inline-block;
+            letter-spacing: 0.01em;
+            border-radius: 1.5em;
+            box-shadow: 0 2px 12px #89f7fe22;
+            position: relative;
+        }
+        .result h3 {
+            font-size: 1.3em;
+            color: #0072ff;
+            background: rgba(200, 240, 255, 0.35);
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-weight: 600;
+            margin-top: 1.2em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #a1c4fd88;
+            display: inline-block;
+            padding: 0.15em 0.7em 0.1em 0.7em;
+            border-radius: 1em;
+            text-shadow: 0 1px 6px #a1c4fd22;
+        }
+        .result p {
+            margin: 1em 0 1.5em 0;
+            font-size: 1.08em;
+            font-family: 'Segoe UI', 'Montserrat', Arial, sans-serif;
+        }
+        .info-card {
+            background: rgba(10, 30, 60, 0.97);
+            border-radius: 14px;
+            box-shadow: 0 4px 24px #00e6ff22;
+            padding: 2em 1.5em;
+            margin-bottom: 2em;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .info-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 32px #00e6ff44;
+        }
+        .info-cards-wrapper {
+            max-width: 800px;
+            margin: 3em auto 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2em;
+        }
+        @media (max-width: 600px) {
+            .glass-card { padding: 1.2em 0.5em; }
+            h1 { font-size: 1.3em; }
+            .input-row { flex-direction: column; gap: 0.5em; }
+            button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating animated objects -->
+    <div class="floating-obj" style="width:120px;height:120px;top:8%;left:6%;background:linear-gradient(135deg,#00e6ff,#0072ff);"></div>
+    <div class="floating-obj floating-obj2" style="width:80px;height:80px;top:70%;left:80%;background:linear-gradient(135deg,#00e6ff,#fff);"></div>
+    <div class="floating-obj floating-obj3" style="width:100px;height:100px;top:60%;left:20%;background:linear-gradient(135deg,#0072ff,#00e6ff);"></div>
+    <div class="floating-obj floating-obj4" style="width:60px;height:60px;top:30%;left:50%;background:linear-gradient(135deg,#00e6ff,#00ffa3);"></div>
+    <div class="floating-obj floating-obj5" style="width:140px;height:140px;top:80%;left:10%;background:linear-gradient(135deg,#0072ff,#00e6ff);"></div>
+    <div class="floating-obj floating-obj6" style="width:90px;height:90px;top:15%;left:75%;background:linear-gradient(135deg,#00ffa3,#00e6ff);"></div>
+    <div class="floating-obj floating-obj7" style="width:50px;height:50px;top:50%;left:30%;background:linear-gradient(135deg,#fff,#00e6ff);"></div>
+    <div class="header">
+        <div class="logo">V2Blog<span style="color:#fff;">AI</span></div>
+        <nav>
+            <a class="nav-link active" href="/">Home</a>
+            <a class="nav-link" href="about.html">About</a>
+            <a class="nav-link" href="contact.html">Contact</a>
+        </nav>
+    </div>
+    <div class="glass-card">
+        <h1>Video to Blog AI Converter</h1>
+        <div class="subtitle">Free AI Tool to Convert YouTube Videos to Blog Posts</div>
+        <form id="blogForm" class="mt-8">
+            <div class="form-group">
+                <input type="text" id="youtubeUrl" name="youtubeUrl" placeholder=" " required class="form-input" />
+                <label for="youtubeUrl" class="form-label">YouTube Video URL</label>
+            </div>
+            <button type="submit" id="submitBtn" class="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold text-lg shadow-lg transition">Generate Post</button>
+        </form>
+        <div class="spinner" id="spinner"></div>
+        <div class="error" id="error"></div>
+        <div class="result" id="result"></div>
+    </div>
+    <div class="info-cards-wrapper">
+        <div class="info-section">
+            <div class="info-card">
+                <h2 style="color:#00e6ff; font-family:'Montserrat',Arial,sans-serif; font-size:1.5em; margin-bottom:0.5em;">How it works</h2>
+                <ol style="font-size:1.1em; line-height:1.7; color:#b0eaff; margin-left:1.2em;">
+                    <li>Paste a YouTube video URL in the box above.</li>
+                    <li>Click <b>Generate Post</b> and wait a few moments.</li>
+                    <li>The AI fetches the transcript, analyzes the content, and writes a detailed blog post for you.</li>
+                    <li>Copy and use your new blog post anywhere you like!</li>
+                </ol>
+            </div>
+        </div>
+        <div class="features-section">
+            <div class="info-card">
+                <h2 style="color:#00e6ff; font-family:'Montserrat',Arial,sans-serif; font-size:1.3em; margin-bottom:0.5em;">Key Features</h2>
+                <ul style="font-size:1.08em; color:#b0eaff; line-height:1.7; margin-left:1.2em;">
+                    <li>Instantly converts any YouTube video to a blog post</li>
+                    <li>Uses advanced AI (Llama 3) for high-quality, human-like writing</li>
+                    <li>Supports all major YouTube video formats</li>
+                    <li>Modern, distraction-free interface</li>
+                    <li>Completely free and privacy-friendly</li>
+                </ul>
+            </div>
+        </div>
+        <div class="faq-section">
+            <div class="info-card">
+                <h2 style="color:#00e6ff; font-family:'Montserrat',Arial,sans-serif; font-size:1.3em; margin-bottom:0.5em;">FAQ</h2>
+                <div style="color:#b0eaff; font-size:1.05em;">
+                    <b>Q: Does this work with any YouTube video?</b><br>
+                    A: It works with most public videos that have captions enabled.<br><br>
+                    <b>Q: Is my data or video history saved?</b><br>
+                    A: No, your data is never stored. Everything runs locally.<br><br>
+                    <b>Q: Can I use the generated blog post commercially?</b><br>
+                    A: Yes! The content is yours to use, edit, or publish anywhere.
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById('blogForm');
+        const resultDiv = document.getElementById('result');
+        const errorDiv = document.getElementById('error');
+        const submitBtn = document.getElementById('submitBtn');
+        const spinner = document.getElementById('spinner');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            resultDiv.classList.remove('visible');
+            resultDiv.innerHTML = '';
+            errorDiv.textContent = '';
+            spinner.style.display = 'block';
+            spinner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            submitBtn.disabled = true;
+            const url = document.getElementById('youtubeUrl').value.trim();
+            try {
+                const response = await fetch('http://127.0.0.1:5000/generate_blog', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    // Format blog post: headings bold, paragraphs spaced
+                    setTimeout(() => {
+                        resultDiv.innerHTML = formatBlogContent(data.blog_post);
+                        resultDiv.classList.add('visible');
+                    }, 300);
+                } else {
+                    errorDiv.textContent = data.error || 'An error occurred.';
+                }
+            } catch (err) {
+                errorDiv.textContent = 'Could not connect to backend.';
+            } finally {
+                spinner.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Format blog post: bold headings, paragraphs, spacing
+        function formatBlogContent(text) {
+            // Split by double newlines for paragraphs/sections
+            let lines = text.split(/\n{2,}/);
+            let html = '';
+            let firstHeading = true;
+            for (let line of lines) {
+                // Remove leading/trailing ** and whitespace
+                let cleanLine = line.trim().replace(/^\*\*|\*\*$/g, '').replace(/\*\*/g, '');
+                // Main heading: first detected heading
+                if (firstHeading && /^([A-Z][A-Za-z0-9\s:'\-\?]+)$/.test(cleanLine) && cleanLine.length < 90) {
+                    html += `<h1>${cleanLine}</h1>`;
+                    firstHeading = false;
+                } else if (/^([A-Z][A-Za-z0-9\s:'\-\?]+)$/.test(cleanLine) && cleanLine.length < 90) {
+                    html += `<h2>${cleanLine}</h2>`;
+                } else if (/^([A-Z][A-Za-z0-9\s:'\-\?]+):$/.test(cleanLine)) {
+                    html += `<h3>${cleanLine}</h3>`;
+                } else {
+                    html += `<p>${cleanLine}</p>`;
+                }
+            }
+            return html;
+        }
+    </script>
+</body>
+</html> 
